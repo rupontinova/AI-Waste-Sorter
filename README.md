@@ -2,6 +2,8 @@
 
 An AI-powered waste classification system built with YOLOv8, Flask, and React.
 
+**Academic Project:** 4th Year, 1st Semester - Artificial Intelligence Lab
+
 ## 📋 Overview
 
 The Smart Waste Sorter is an end-to-end computer vision application that uses YOLOv8 object detection to identify and classify waste items into four categories:
@@ -277,30 +279,11 @@ Expected response:
 - Check CORS configuration in `app.py`
 - Try clearing browser cache
 
-## 🤝 Contributing
-
-Contributions are welcome! Areas for improvement:
-
-- [ ] Add video stream processing
-- [ ] Implement model fine-tuning pipeline
-- [ ] Add more waste categories (glass, e-waste, etc.)
-- [ ] Create mobile app version (React Native)
-- [ ] Add IoT integration for smart bins
-- [ ] Improve classification accuracy with ensemble models
-
-## 📄 License
-
-This project is for educational purposes. YOLOv8 is licensed under AGPL-3.0.
-
-## 🙏 Acknowledgments
+## 🙏 Technologies Used
 
 - [Ultralytics YOLOv8](https://github.com/ultralytics/ultralytics) - Object detection model
 - [Flask](https://flask.palletsprojects.com/) - Backend framework
 - [React](https://react.dev/) - Frontend framework
-
-## 📧 Contact
-
-For questions or support, please open an issue on GitHub.
 
 ---
 
