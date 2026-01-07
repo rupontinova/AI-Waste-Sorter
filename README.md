@@ -13,6 +13,10 @@ The Smart Waste Sorter is an end-to-end computer vision application that uses YO
 - 🔵 **Metal** - Cans, metal containers, aluminum foil
 - 🟠 **Organic** - Food waste, fruits, vegetables
 
+## 📸 Application Preview
+
+![Smart Waste Sorter Application](resources/ss_smart_waste_fullpage.png)
+
 ## 🏗️ Architecture
 
 ```
