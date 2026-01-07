@@ -28,6 +28,7 @@ print("="*60)
 
 # --- Intelligent Class Re-mapping ---
 # This dictionary maps the 80 COCO classes from YOLOv8 to our 4 waste categories
+
 # Based on the object's typical material composition and common waste types
 CLASS_MAP = {
     # Plastic items
