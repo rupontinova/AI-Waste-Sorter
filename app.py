@@ -21,8 +21,27 @@ print("Initializing Smart Waste Sorter Backend")
 print("="*60)
 
 # Load the YOLOv8 model (will use the downloaded model)
-model = YOLO('yolov8n.pt')
-print("✓ Model loaded successfully!")
+import os
+import sys
+
+MODEL_PATH = 'yolov8n.pt'
+
+# Check if model exists, if not try to download it
+if not os.path.exists(MODEL_PATH):
+    print("⚠️  Model file not found. Attempting to download...")
+    try:
+        # Try to download the model
+        from ultralytics import YOLO
+        model = YOLO('yolov8n.pt')  # This will auto-download
+        print("✓ Model downloaded successfully!")
+    except Exception as e:
+        print(f"❌ Failed to download model: {e}")
+        print("Please run 'python load_model.py' manually.")
+        sys.exit(1)
+else:
+    model = YOLO(MODEL_PATH)
+    print("✓ Model loaded successfully!")
+
 print(f"  Model classes: {len(model.names)}")
 print("="*60)
 
@@ -207,16 +226,22 @@ def get_categories():
     })
 
 if __name__ == '__main__':
+    import os
+    
     print("\n" + "="*60)
     print("🚀 Starting Flask Backend Server")
     print("="*60)
-    print("Server will run on: http://localhost:5001")
+    
+    # Use PORT from environment (for deployment) or default to 5001 (for local dev)
+    port = int(os.environ.get('PORT', 5001))
+    
+    print(f"Server will run on: http://0.0.0.0:{port}")
     print("API Endpoints:")
     print("  GET  / - Health check")
     print("  POST /predict - Image classification")
     print("  GET  /categories - Available waste categories")
     print("="*60 + "\n")
     
-    # Run the app, accessible from any IP on port 5001 (5000 used by AirPlay on macOS)
-    app.run(host='0.0.0.0', port=5001, debug=True)
+    # Run the app, accessible from any IP
+    app.run(host='0.0.0.0', port=port, debug=os.environ.get('FLASK_ENV') != 'production')
 

@@ -283,6 +283,60 @@ Expected response:
 - Check CORS configuration in `app.py`
 - Try clearing browser cache
 
+### Deployment Errors
+
+#### Exit Status 127 (Command Not Found)
+**Symptoms:** Deployment fails with "Exited with status 127"
+
+**Causes:**
+- Model file not available during deployment
+- Missing build step to download the model
+- Command path issues
+
+**Solutions:**
+1. Ensure `python load_model.py` is in your build command
+2. Check that all dependencies are in `requirements.txt`
+3. Verify gunicorn is installed (it is in requirements.txt)
+4. See `DEPLOYMENT_FIX.md` for detailed fix instructions
+
+**Fixed Configuration:**
+```yaml
+# render.yaml
+buildCommand: pip install -r requirements.txt && python load_model.py
+startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --timeout 120 --workers 2
+```
+
+```
+# Procfile
+web: python load_model.py && gunicorn app:app --bind 0.0.0.0:$PORT --timeout 120 --workers 2
+```
+
+#### Timeout Errors
+**Symptoms:** "Process failed to bind to port within 60 seconds"
+
+**Solution:** Model loading takes time. Increase timeout:
+```bash
+gunicorn app:app --timeout 120
+```
+
+#### Out of Memory
+**Symptoms:** Deployment crashes or restarts repeatedly
+
+**Solution:** 
+- YOLOv8 requires at least 512MB RAM
+- Upgrade your hosting plan if needed
+- Use `yolov8n.pt` (nano) instead of larger models
+
+#### Disk Space Issues
+**Symptoms:** "No space left on device"
+
+**Solution:**
+- Model files are ~6MB, ensure sufficient disk space
+- Clear cache: `pip cache purge`
+- Use persistent disk storage on Render
+
+For detailed deployment troubleshooting, see **[DEPLOYMENT_FIX.md](DEPLOYMENT_FIX.md)**
+
 ## 🙏 Technologies Used
 
 - [Ultralytics YOLOv8](https://github.com/ultralytics/ultralytics) - Object detection model

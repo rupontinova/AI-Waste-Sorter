@@ -1,0 +1,14 @@
+# Frontend files (not needed on backend)
+smart-sorter-ui/
+node_modules/
+*.md
+test/
+resources/
+*.sh
+
+# Development files
+__pycache__/
+*.pyc
+.env
+.DS_Store
+
