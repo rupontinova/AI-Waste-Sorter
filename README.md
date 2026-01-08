@@ -4,6 +4,10 @@ An AI-powered waste classification system built with YOLOv8, Flask, and React.
 
 **Academic Project:** 4th Year, 1st Semester - Artificial Intelligence Lab
 
+## 🌐 Live Demo
+
+🚀 **Try it now:** [https://ai-waste-sorter.vercel.app/](https://ai-waste-sorter.vercel.app/)
+
 ## 📋 Overview
 
 The Smart Waste Sorter is an end-to-end computer vision application that uses YOLOv8 object detection to identify and classify waste items into four categories:
@@ -336,6 +340,29 @@ gunicorn app:app --timeout 120
 - Use persistent disk storage on Render
 
 For detailed deployment troubleshooting, see **[DEPLOYMENT_FIX.md](DEPLOYMENT_FIX.md)**
+
+## 🌐 Live Deployments
+
+The application is deployed and accessible online:
+
+### Frontend (React)
+- **Live URL:** [https://ai-waste-sorter.vercel.app/](https://ai-waste-sorter.vercel.app/)
+- **Platform:** Vercel
+- **Features:** Custom React UI with image upload, real-time classification, and result visualization
+
+### Backend (Flask API)
+- **API URL:** `https://rupontinova-smart-waste-sorter-api.hf.space`
+- **Platform:** Hugging Face Spaces
+- **Specs:** 16GB RAM, Docker container
+- **Endpoints:**
+  - `GET /` - Health check
+  - `POST /predict` - Image classification
+  - `GET /categories` - Available categories
+
+### Alternative Demo (Gradio UI)
+- **Live URL:** [https://huggingface.co/spaces/rupontinova/smart-waste-sorter](https://huggingface.co/spaces/rupontinova/smart-waste-sorter)
+- **Platform:** Hugging Face Spaces
+- **Features:** Interactive Gradio interface with built-in UI
 
 ## 🙏 Technologies Used
 
