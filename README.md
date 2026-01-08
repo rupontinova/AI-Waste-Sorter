@@ -34,38 +34,31 @@ The Smart Waste Sorter is an end-to-end computer vision application that uses YO
 └─────────────────┘                          └──────────────────┘
 ```
 
-## 🚀 Installation & Setup
+## 🚀 Local Development Setup
 
 ### Prerequisites
 
-- Python 3.8+ 
-- Node.js 14+
+- Python 3.11+
+- Node.js 18+
+- Docker (for backend)
 - npm or yarn
 
-### Backend Setup
+### Backend Setup (Local Development)
 
-1. **Install Python dependencies:**
+1. **Navigate to backend folder:**
 ```bash
-pip install -r requirements.txt
+cd huggingface_flask_deploy
 ```
 
-2. **Download and verify the AI model:**
+2. **Build and run with Docker:**
 ```bash
-python3 load_model.py
+docker build -t waste-sorter-backend .
+docker run -p 7860:7860 waste-sorter-backend
 ```
 
-This will download the YOLOv8 model (first run only) and verify it's working.
+The backend will be available at `http://localhost:7860`
 
-3. **Start the Flask backend:**
-```bash
-python3 app.py
-```
-
-The backend will be available at `http://localhost:5001`
-
-**Note:** We use port 5001 instead of 5000 because macOS uses port 5000 for AirPlay/AirTunes.
-
-### Frontend Setup
+### Frontend Setup (Local Development)
 
 1. **Navigate to the React app directory:**
 ```bash
@@ -77,7 +70,12 @@ cd smart-sorter-ui
 npm install
 ```
 
-3. **Start the development server:**
+3. **Create `.env.local` file:**
+```bash
+echo "REACT_APP_API_URL=http://localhost:7860" > .env.local
+```
+
+4. **Start the development server:**
 ```bash
 npm start
 ```
@@ -99,13 +97,14 @@ The app will open automatically at `http://localhost:3000`
 
 ## 🧠 How It Works
 
-### 1. Model Loading (`load_model.py`)
+### 1. Model Loading
 
-- Attempts to load a waste-specific YOLOv8 model from Hugging Face
-- Falls back to the base YOLOv8n model for demonstration
-- Downloads model weights automatically on first run
+- YOLOv8n model is downloaded automatically during Docker build
+- Model is loaded when the Flask API starts
+- Uses base YOLOv8n trained on COCO dataset (80 object classes)
+- Model weights are cached for subsequent runs
 
-### 2. Backend API (`app.py`)
+### 2. Backend API (`huggingface_flask_deploy/app.py`)
 
 The Flask backend provides three endpoints:
 
@@ -142,88 +141,56 @@ React application features:
 
 ```
 waste_sorter/
-├── app.py                    # Flask backend API
-├── load_model.py             # Model loading script
-├── requirements.txt          # Python dependencies
-├── README.md                 # This file
-├── yolov8n.pt               # Downloaded YOLOv8 model (auto-created)
-└── smart-sorter-ui/         # React frontend
-    ├── src/
-    │   ├── App.js           # Main React component
-    │   ├── App.css          # Styling
-    │   └── index.js         # Entry point
-    ├── public/
-    └── package.json         # Node dependencies
+├── README.md                         # Project documentation
+├── ai project proposal.pptx          # Academic project proposal
+│
+├── huggingface_flask_deploy/         # Backend (Hugging Face Spaces)
+│   ├── app.py                        # Flask API
+│   ├── Dockerfile                    # Docker configuration
+│   ├── requirements.txt              # Python dependencies
+│   └── README.md                     # Backend documentation
+│
+├── smart-sorter-ui/                  # Frontend (Vercel)
+│   ├── src/
+│   │   ├── App.js                    # Main React component
+│   │   ├── App.css                   # Styling
+│   │   └── index.js                  # Entry point
+│   ├── public/                       # Static assets
+│   └── package.json                  # Node dependencies
+│
+└── resources/                        # Project assets
+    └── ss_smart_waste_fullpage.png   # App screenshot
 ```
 
 ## 🔧 Configuration
 
 ### Backend Configuration
 
-Edit `app.py` to customize:
+Edit `huggingface_flask_deploy/app.py` to customize:
 
-- **Model path**: Change `YOLO('yolov8n.pt')` to use a different model
+- **Model**: Change `YOLO('yolov8n.pt')` to use a different model
 - **Confidence threshold**: Adjust `conf=0.25` in the predict function
 - **Class mappings**: Modify the `CLASS_MAP` dictionary
-- **Port**: Change `port=5000` in `app.run()`
+- **Port**: Default is 7860 for Hugging Face Spaces
 
 ### Frontend Configuration
 
-Edit `src/App.js` to customize:
+Edit `smart-sorter-ui/src/App.js` to customize:
 
-- **API endpoint**: Change `http://localhost:5000` if backend is on a different host
+- **API endpoint**: Set via `REACT_APP_API_URL` environment variable
 - **Colors**: Modify `categoryColors` object
 - **Timeout**: Adjust `timeout: 30000` for slower networks
 
-## 🎯 Advanced Usage
-
-### Fine-Tuning the Model
-
-To train on custom waste data:
-
-1. Prepare a dataset in YOLO format (images + labels)
-2. Create a `data.yaml` configuration file
-3. Run training:
-
-```python
-from ultralytics import YOLO
-
-model = YOLO('yolov8n.pt')
-model.train(data='data.yaml', epochs=50, imgsz=640)
-```
-
-4. Replace `yolov8n.pt` in `app.py` with your trained `best.pt`
-
-### Deployment
-
-**Backend (Flask):**
-- Use a production WSGI server like Gunicorn
-- Deploy to cloud platforms (Google Cloud Run, AWS, Heroku)
-- Enable HTTPS and configure CORS properly
-
-**Frontend (React):**
-- Run `npm run build` to create production build
-- Deploy to Netlify, Vercel, or any static hosting
-- Update API endpoint to production backend URL
+Environment variables:
+- **Local:** Create `.env.local` with `REACT_APP_API_URL=http://localhost:7860`
+- **Production:** Set in Vercel dashboard
 
 ## 🧪 Testing
 
-### Test the Backend Independently
+### Test Production Backend
 
 ```bash
-curl -X POST -F "image=@test_image.jpg" http://localhost:5001/predict
-```
-
-### Check Backend Status
-
-```bash
-curl http://localhost:5001/
-```
-
-### Run Automated Tests
-
-```bash
-python3 test_backend.py
+curl https://rupontinova-smart-waste-sorter-api.hf.space/
 ```
 
 Expected response:
@@ -233,8 +200,21 @@ Expected response:
   "service": "Smart Waste Sorter API",
   "version": "1.0.0",
   "model": "YOLOv8n",
-  "categories": ["Plastic", "Paper", "Metal", "Organic"]
+  "categories": ["Plastic", "Paper", "Metal", "Organic"],
+  "deployed_on": "Hugging Face Spaces"
 }
+```
+
+### Test Local Backend (if running)
+
+```bash
+curl http://localhost:7860/
+```
+
+### Test Image Classification
+
+```bash
+curl -X POST -F "image=@your_image.jpg" https://rupontinova-smart-waste-sorter-api.hf.space/predict
 ```
 
 ## 📊 API Reference
@@ -287,59 +267,15 @@ Expected response:
 - Check CORS configuration in `app.py`
 - Try clearing browser cache
 
-### Deployment Errors
+### Deployment Notes
 
-#### Exit Status 127 (Command Not Found)
-**Symptoms:** Deployment fails with "Exited with status 127"
+The application is deployed using:
+- **Backend:** Docker container on Hugging Face Spaces (16GB RAM)
+- **Frontend:** Static hosting on Vercel
 
-**Causes:**
-- Model file not available during deployment
-- Missing build step to download the model
-- Command path issues
-
-**Solutions:**
-1. Ensure `python load_model.py` is in your build command
-2. Check that all dependencies are in `requirements.txt`
-3. Verify gunicorn is installed (it is in requirements.txt)
-4. See `DEPLOYMENT_FIX.md` for detailed fix instructions
-
-**Fixed Configuration:**
-```yaml
-# render.yaml
-buildCommand: pip install -r requirements.txt && python load_model.py
-startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --timeout 120 --workers 2
-```
-
-```
-# Procfile
-web: python load_model.py && gunicorn app:app --bind 0.0.0.0:$PORT --timeout 120 --workers 2
-```
-
-#### Timeout Errors
-**Symptoms:** "Process failed to bind to port within 60 seconds"
-
-**Solution:** Model loading takes time. Increase timeout:
-```bash
-gunicorn app:app --timeout 120
-```
-
-#### Out of Memory
-**Symptoms:** Deployment crashes or restarts repeatedly
-
-**Solution:** 
-- YOLOv8 requires at least 512MB RAM
-- Upgrade your hosting plan if needed
-- Use `yolov8n.pt` (nano) instead of larger models
-
-#### Disk Space Issues
-**Symptoms:** "No space left on device"
-
-**Solution:**
-- Model files are ~6MB, ensure sufficient disk space
-- Clear cache: `pip cache purge`
-- Use persistent disk storage on Render
-
-For detailed deployment troubleshooting, see **[DEPLOYMENT_FIX.md](DEPLOYMENT_FIX.md)**
+For deployment details, check the respective folders:
+- Backend: `huggingface_flask_deploy/`
+- Frontend: `smart-sorter-ui/`
 
 ## 🌐 Live Deployments
 
