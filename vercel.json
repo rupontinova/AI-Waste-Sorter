@@ -1,8 +1,0 @@
-{
-  "buildCommand": "cd smart-sorter-ui && npm install && npm run build",
-  "outputDirectory": "smart-sorter-ui/build",
-  "devCommand": "cd smart-sorter-ui && npm start",
-  "installCommand": "cd smart-sorter-ui && npm install",
-  "framework": "create-react-app"
-}
-
