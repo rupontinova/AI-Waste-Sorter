@@ -295,11 +295,6 @@ The application is deployed and accessible online:
   - `POST /predict` - Image classification
   - `GET /categories` - Available categories
 
-### Alternative Demo (Gradio UI)
-- **Live URL:** [https://huggingface.co/spaces/rupontinova/smart-waste-sorter](https://huggingface.co/spaces/rupontinova/smart-waste-sorter)
-- **Platform:** Hugging Face Spaces
-- **Features:** Interactive Gradio interface with built-in UI
-
 ## 🙏 Technologies Used
 
 - [Ultralytics YOLOv8](https://github.com/ultralytics/ultralytics) - Object detection model
