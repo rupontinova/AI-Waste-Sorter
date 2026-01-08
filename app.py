@@ -162,8 +162,16 @@ def predict():
         print(f"Processing image: {file.filename}")
         print(f"Image size: {img.size}")
         
+        # Resize image to reduce memory usage
+        max_size = 320  # Reduced from default 640 for free tier
+        if max(img.size) > max_size:
+            ratio = max_size / max(img.size)
+            new_size = tuple(int(dim * ratio) for dim in img.size)
+            img = img.resize(new_size, Image.Resampling.LANCZOS)
+            print(f"Resized to: {img.size}")
+        
         # Run inference on the image with confidence threshold
-        results = model(img, conf=0.25)  # 25% confidence threshold
+        results = model(img, conf=0.25, imgsz=320)  # 25% confidence, smaller image size
         
         detections = []
         counts = collections.defaultdict(int)

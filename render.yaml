@@ -3,7 +3,7 @@ services:
     name: waste-sorter-backend
     env: python
     buildCommand: pip install -r requirements.txt && python load_model.py
-    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --timeout 120 --workers 2
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --timeout 300 --workers 1 --threads 1 --worker-class sync --max-requests 10 --max-requests-jitter 5
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
