@@ -1,0 +1,457 @@
+/* --- Global Styles --- */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* New Color Palette: Shades of Green and Yellow */
+  --color-primary-green: #2E7D32; /* Deep Green for primary actions */
+  --color-secondary-yellow: #FFC107; /* Bright Yellow for accents */
+  --color-background-light: #F1F8E9; /* Very light green for backgrounds */
+  --color-card-bg: #FFFFFF;
+  --color-text-dark: #1B2E21;
+  --color-text-medium: #4A5D52;
+  --color-text-light: #75867F;
+  --color-error: #D32F2F; /* A red that complements green */
+  --color-upload-bg: #E8F5E9;
+
+  /* Modern Shadows */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 6px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, var(--color-background-light) 0%, #DCEDC8 100%);
+  min-height: 100vh;
+  color: var(--color-text-dark);
+}
+
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  flex: 1;
+  max-width: 1200px; /* Slightly reduced max-width for a focused feel */
+  margin: 3rem auto; /* More margin for breathing space */
+  padding: 0 1.5rem;
+  width: 100%;
+}
+
+/* --- Header --- */
+.App-header {
+  background: var(--color-card-bg); /* Use card background for header */
+  padding: 1.5rem 2rem;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  border-bottom: 4px solid var(--color-primary-green); /* A nice green accent line */
+}
+
+.App-header h1 {
+  color: var(--color-text-dark);
+  font-size: 2.2rem;
+  margin-bottom: 0.3rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  color: var(--color-text-medium);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* --- Section Styling (Upload, Canvas, Results) --- */
+.section-card {
+  background: var(--color-card-bg);
+  padding: 2.5rem; /* Increased padding */
+  border-radius: 16px; /* Smoother corners */
+  box-shadow: var(--shadow-md);
+  margin-bottom: 2rem;
+  border-left: 5px solid var(--color-secondary-yellow); /* Subtle border for distinction */
+}
+
+.section-card h3 {
+  color: var(--color-text-dark);
+  margin-bottom: 1.5rem;
+  font-size: 1.6rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* --- Upload Section --- */
+.file-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  padding: 1rem;
+  border: 2px dashed var(--color-upload-bg); /* Dashed border for file drop area feel */
+  border-radius: 12px;
+  transition: all 0.2s ease-in-out;
+}
+
+.file-input-wrapper.dragging {
+  border-color: var(--color-primary-green);
+  background-color: #E8F5E9;
+}
+
+.file-input-label {
+  background: linear-gradient(45deg, var(--color-primary-green) 0%, #558B2F 100%); /* Green gradient */
+  color: white;
+  padding: 1rem 2.5rem; /* Bigger button */
+  border-radius: 50px; /* Pill-shaped button */
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.file-input-label:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(56, 239, 125, 0.5); /* Stronger hover shadow */
+}
+
+.file-input-label.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.file-name {
+  color: var(--color-text-medium);
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 500;
+  padding-left: 1rem;
+  border-left: 2px solid var(--color-upload-bg);
+}
+
+/* --- Button Group --- */
+.button-group {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 1rem 2.5rem;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.btn-primary { /* Classify Button */
+  background: var(--color-primary-green);
+  color: white;
+  text-transform: uppercase;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(102, 126, 234, 0.5);
+}
+
+.btn-secondary { /* Reset Button */
+  background: var(--color-secondary-yellow);
+  color: var(--color-text-dark);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(238, 90, 111, 0.5);
+}
+
+/* --- Content Layout --- */
+.content {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* Image takes more space than results */
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* --- Canvas Section (Image Display) --- */
+.canvas-container {
+  width: 100%;
+  max-height: 60vh; /* Controlled height */
+  overflow: hidden; /* Hide scrollbar but allow scaling */
+  border-radius: 10px;
+  background: var(--color-background-light); /* Light background for the image area */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.canvas-container canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  max-height: 60vh;
+  object-fit: contain; /* Ensure the image fits nicely */
+  transition: transform 0.3s ease;
+}
+
+.webcam-container {
+  position: relative;
+  width: 100%;
+}
+
+.capture-btn {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+
+/* --- Results Section --- */
+.counts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.count-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: var(--color-background-light);
+  border-radius: 10px;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
+  cursor: default;
+}
+
+.count-item:hover {
+  background: #e9ecef;
+  transform: scale(1.02);
+}
+
+.color-indicator {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  box-shadow: var(--shadow-sm);
+  margin-right: 1rem;
+  border: 2px solid var(--color-card-bg);
+  flex-shrink: 0; /* Prevents the indicator from shrinking */
+}
+
+.category-info {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 1rem;
+}
+
+.category-name {
+  font-weight: 600;
+  color: var(--color-text-dark);
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+.recycling-tip {
+  font-size: 0.9rem;
+  color: var(--color-text-medium);
+  line-height: 1.4;
+}
+
+.count-badge {
+  background: var(--color-primary-green);
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1rem;
+  min-width: 60px;
+  text-align: center;
+}
+
+.summary {
+  background: var(--color-secondary-yellow);
+  color: var(--color-text-dark);
+  padding: 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+  box-shadow: var(--shadow-md);
+  margin-top: 2rem;
+}
+
+/* --- Instructions/Legend Section --- */
+.instructions {
+  grid-column: 1 / -1;
+  border-left: 5px solid var(--color-primary-green); /* Different accent color for this section */
+}
+
+.instructions ol {
+  list-style: decimal inside;
+  color: var(--color-text-medium);
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+  padding-left: 0;
+}
+
+.instructions li {
+  padding: 0.5rem 0;
+  font-weight: 500;
+}
+
+.categories-legend h4 {
+  color: var(--color-text-dark);
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.legend-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Wider legend items */
+  gap: 1rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--color-background-light);
+  border-radius: 10px;
+  box-shadow: var(--shadow-sm);
+}
+
+.legend-color {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  border: 3px solid var(--color-card-bg);
+}
+
+.legend-item span {
+  color: var(--color-text-dark);
+  font-weight: 600;
+}
+
+/* --- Error Message --- */
+.error-message {
+  background: #ffeded;
+  border: 1px solid var(--color-error);
+  color: var(--color-error);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+
+/* --- Footer --- */
+.App-footer {
+  background: var(--color-card-bg);
+  padding: 1rem;
+  text-align: center;
+  color: var(--color-text-medium);
+  font-size: 0.9rem;
+  margin-top: auto;
+  border-top: 1px solid #eee;
+}
+
+/* --- Stats Section --- */
+.stats-section {
+  border-left-color: var(--color-primary-green);
+}
+
+/* --- Responsive Design (Enhanced) --- */
+@media (max-width: 992px) {
+  .content {
+    grid-template-columns: 1fr; /* Single column layout on tablets/mobiles */
+  }
+
+  .container {
+    margin: 2rem auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .App-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .upload-section,
+  .canvas-section,
+  .results-section,
+  .instructions {
+    padding: 1.5rem;
+  }
+  
+  .section-card {
+    border-left: none;
+    border-top: 5px solid var(--color-secondary-yellow);
+  }
+
+  .file-input-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+    border: none;
+  }
+
+  .file-input-label {
+    text-align: center;
+    width: 100%;
+  }
+
+  .file-name {
+    padding-left: 0;
+    border-left: none;
+    text-align: center;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
